@@ -93,7 +93,6 @@ public void OnPluginStart()
 	
 	g_ProtectedVars = new StringMap();
 	ProtectVar("rcon_password");
-	ProtectVar("sm_show_activity");
 	ProtectVar("sm_immunity_mode");
 }
 
@@ -319,16 +318,6 @@ public Action Command_Cvar(int client, int args)
 		}
 	}
 
-	if ((hndl.Flags & FCVAR_PROTECTED) != FCVAR_PROTECTED)
-	{
-		ShowActivity2(client, "[SM] ", "%t", "Cvar changed", cvarname, value);
-	}
-	else
-	{
-		ReplyToCommand(client, "[SM] %t", "Cvar changed", cvarname, value);
-	}
-
-	LogAction(client, -1, "\"%L\" changed cvar (cvar \"%s\") (value \"%s\")", client, cvarname, value);
 
 	hndl.SetString(value, true);
 
@@ -365,16 +354,7 @@ public Action Command_ResetCvar(int client, int args)
 	char value[255];
 	hndl.GetString(value, sizeof(value));
 
-	if ((hndl.Flags & FCVAR_PROTECTED) != FCVAR_PROTECTED)
-	{
-		ShowActivity2(client, "[SM] ", "%t", "Cvar changed", cvarname, value);
-	}
-	else
-	{
-		ReplyToCommand(client, "[SM] %t", "Cvar changed", cvarname, value);
-	}
 
-	LogAction(client, -1, "\"%L\" reset cvar (cvar \"%s\") (value \"%s\")", client, cvarname, value);
 
 	return Plugin_Handled;
 }
@@ -395,15 +375,10 @@ public Action Command_Rcon(int client, int args)
 	if (client == 0) // They will already see the response in the console.
 	{
 		ServerCommand("%s", argstring);
-	}
-	else
-	{
+	} else {
 		char responseBuffer[4096];
 		ServerCommandEx(responseBuffer, sizeof(responseBuffer), "%s", argstring);
-		if (IsClientConnected(client))
-		{
-			ReplyToCommand(client, responseBuffer);
-		}
+		ReplyToCommand(client, responseBuffer);
 	}
 
 	return Plugin_Handled;
