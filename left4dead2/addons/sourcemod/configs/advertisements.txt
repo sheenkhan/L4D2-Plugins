@@ -1,0 +1,44 @@
+// Advertisements 2.0
+// by Tsunami
+//
+// Types
+// -----
+// center: Center message
+// chat: Chat message
+// hint: Hint message
+// menu: Menu message
+// top: Top message
+//
+// Flags (optional)
+// -----
+// Accepts flags of admins that will not see the advertisement.
+// When omitted everyone will see the advertisement.
+// When left empty only admins will see the advertisement.
+
+"Advertisements"
+{
+    "1"
+    {
+        "chat"		"{lightgreen} !v投票 !zs自杀 !away闲置 !join加入 !mvp战绩"
+    }
+    "2"
+    {
+        "chat"		"{lightgreen} 服务器时间:{time24} - {date}"
+    }
+    "3"
+    {
+        "chat"		""
+    }
+    "4"
+    {
+        "chat"		"{lightgreen} 按R可以传递投掷物品和医疗物品"
+    }
+    "5"
+    {
+        "chat"		""
+    }
+    "6"
+    {
+        "chat"		" "
+    }
+}
