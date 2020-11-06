@@ -99,6 +99,7 @@ chmod +x ~/game/l4d2/start.sh
 - **TickrateFixes** 高Tickrate修复，来源：[点击](https://github.com/SirPlease/L4D2-Competitive-Rework)
 - **votes** 投票回血、踢人、换图插件，命令`!v`，来源：[点击](https://bbs.3dmgame.com/thread-2094823-1-1.html)
 - **stripper** 在地图上添加或删除物品，用于在c1m1开局添加枪械，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2720408&postcount=1735)
+- **Playerjoin** 玩家加入、离开提示，来源：[点击](https://forums.alliedmods.net/showthread.php?t=213471)
 
 ## 其他说明
 
