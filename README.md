@@ -100,6 +100,8 @@ chmod +x ~/game/l4d2/start.sh
 - **votes** 投票回血、踢人、换图插件，命令`!v`，来源：[点击](https://bbs.3dmgame.com/thread-2094823-1-1.html)
 - **stripper** 在地图上添加或删除物品，用于在c1m1开局添加枪械，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2720408&postcount=1735)
 - **Playerjoin** 玩家加入、离开提示，来源：[点击](https://forums.alliedmods.net/showthread.php?t=213471)
+- **lerpmonitor** 跟踪、显示玩家lerp值，来源：[点击](https://github.com/SirPlease/L4D2-Competitive-Rework/blob/master/addons/sourcemod/scripting/lerpmonitor.sp)
+- **sam_vs** 自动踢闲置玩家，来源：[点击](https://github.com/raziEiL/SourceMod/blob/master/released/sam_vs.sp)
 
 ## 其他说明
 
