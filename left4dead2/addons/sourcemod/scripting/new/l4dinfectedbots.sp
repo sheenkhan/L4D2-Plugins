@@ -18,7 +18,7 @@
 #define DEBUGCLIENTS 0  // 改为1查看对话框debug
 #define DEBUGTANK 0
 #define DEBUGHUD 0
-#define DEVELOPER 1  // 改为1使用开发者指令
+#define DEVELOPER 0  // 改为1使用开发者指令
 
 #define TEAM_SPECTATOR		1
 #define TEAM_SURVIVORS 		2
@@ -2273,11 +2273,20 @@ stock CheatCommand(client, String:command[], String:arguments[] = "")
 	SetUserFlagBits(client, userFlags);
 }
 
+bool IsPlayerGenericAdmin(int client)
+{
+    if (CheckCommandAccess(client, "generic_admin", ADMFLAG_GENERIC, false))
+    {
+        return false;
+    }
+
+    return true;
+}  
 /////////////////////////////////////////////////////////
 
 public Action:R14Infectedon(client, args)
 {
-	if (client != 0 && OA_AIS && GetUserFlagBits(client))
+	if (client != 0 && OA_AIS && IsPlayerGenericAdmin(client))
 	{
 		ReplyToCommand(client, "[提示] 该功能只限管理员使用.");
 		return Action:0;
@@ -2298,7 +2307,7 @@ Rs14Infectedon()
 
 public Action:R14Infectedon2(client, args)
 {
-	if (client != 0 && OA_AIS && GetUserFlagBits(client))
+	if (client != 0 && OA_AIS && IsPlayerGenericAdmin(client))
 	{
 		ReplyToCommand(client, "[提示] 该功能只限管理员使用.");
 		return Action:0;
@@ -2318,7 +2327,7 @@ Rs14Infectedon2()
 
 public Action:R14Infectedon3(client, args)
 {
-	if (client != 0 && OA_AIS && GetUserFlagBits(client))
+	if (client != 0 && OA_AIS && IsPlayerGenericAdmin(client))
 	{
 		ReplyToCommand(client, "[提示] 该功能只限管理员使用.");
 		return Action:0;
@@ -2338,7 +2347,7 @@ Rs14Infectedon3()
 
 public Action:R14Infectedoff(client, args)
 {
-	if (client != 0 && OA_AIS && GetUserFlagBits(client))
+	if (client != 0 && OA_AIS && IsPlayerGenericAdmin(client))
 	{
 		ReplyToCommand(client, "[提示] 该功能只限管理员使用.");
 		return Action:0;
@@ -2352,7 +2361,7 @@ public Action:R14Infectedoff(client, args)
 
 public Action:IFADDNumsetcheck(client, args)
 {
-	if (client != 0 && OA_AIS && GetUserFlagBits(client))
+	if (client != 0 && OA_AIS && IsPlayerGenericAdmin(client))
 	{
 		ReplyToCommand(client, "[提示] 该功能只限管理员使用.");
 		return Action:0;
@@ -2363,7 +2372,7 @@ public Action:IFADDNumsetcheck(client, args)
 
 public Action:IFADDTimecheck(client, args)
 {
-	if (client != 0 && OA_AIS && GetUserFlagBits(client))
+	if (client != 0 && OA_AIS && IsPlayerGenericAdmin(client))
 	{
 		ReplyToCommand(client, "[提示] 该功能只限管理员使用.");
 		return Action:0;
