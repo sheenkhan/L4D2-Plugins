@@ -39,7 +39,7 @@ public OnPluginStart()
 public Action:BlockIdle(client, args)
 {
 
-	PrintHintText(client, "闲置请用 !away 命令",client);
+	PrintHintText(client, "闲置请用 !away 命令");
 	return Plugin_Handled;
 }
 
@@ -47,7 +47,7 @@ public Action:AFKTurnClientToSpectate(client, args)
 {
 
 	CreateTimer(3.0, Timer_CheckAway, client, 2);
-	PrintHintText(client, "3秒后进入闲置状态",client);
+	PrintHintText(client, "3秒后进入闲置状态");
 
 }
 
