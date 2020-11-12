@@ -90,7 +90,7 @@ chmod +x ~/game/l4d2/start.sh
 - **l4d2_melee_in_the_saferoom** 安全屋刷近战，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2719475&postcount=500)
 - **l4d2_skill_detect** smoker tongue cut、skeet hunter 等骚操作提示，来源：[点击](https://github.com/SirPlease/L4D2-Competitive-Rework/blob/master/addons/sourcemod/scripting/l4d2_skill_detect.sp)
 - **l4dinfectedbots** 多特插件，来源：[点击](https://github.com/9-BAKA/sourcemod/blob/master/l4dinfectedbots.sp)
-- **linux_auto_restart** 空服后重启服务器，来源：[点击](https://github.com/fbef0102/L4D1_2-Plugins)
+- **sm_RestartEmpty** 空服后重启服务器，来源：[点击](https://forums.alliedmods.net/showthread.php?t=315367)
 - **logcommands** 客户端聊天、命令记录，来源：[点击](https://github.com/Franc1sco/Commands-Logger)
 - **rygive** 另一个管理员刷物品、特感插件，命令`!rygive`，来源QQ群
 - **SaferoomHPRestore** 开局回血，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2647749&postcount=8)
