@@ -31,7 +31,7 @@
 #define MODEL_JOCKEY "models/infected/jockey.mdl"
 #define MODEL_CHARGER "models/infected/charger.mdl"
 #define MODEL_TANK "models/infected/hulk.mdl"
-#define ZOMBIESPAWN_Attempts 7
+#define ZOMBIESPAWN_Attempts 30
 
 // l4d1/2 value
 static char sSpawnCommand[32];
