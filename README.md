@@ -79,7 +79,7 @@ chmod +x ~/game/l4d2/start.sh
 - **firebulletsfix** 修复子弹偏移 1 Tick 的问题，来源：[点击](https://github.com/fbef0102/L4D1_2-Plugins)
 - **fix_fastmelee** 近战速砍修复，来源：[点击](https://forums.alliedmods.net/showthread.php?p=2407280)
 - **hostname** 服务器中文名支持，来源：[点击](https://github.com/HMBSbige/SouceModPlugins)
-- **l4d_afk_commands** 闲置、加入、自杀命令，命令`!away`、`!join`、`!zs`，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2718427&postcount=30)
+- **l4d_afk_commands** 闲置、加入、自杀命令，命令`!away`、`!join`、`!zs`
 - **l4d_gear_transfer** R键给物品、Bot自动给物品，来源：[点击](https://forums.alliedmods.net/showthread.php?t=137616)
 - **l4d_god_frames** 无敌帧(起身、硬直)修复，来源：[点击](https://forums.alliedmods.net/showthread.php?t=320023)
 - **l4d_skip_intro** 跳过首章地图的过场动画，来源：[点击](https://forums.alliedmods.net/showthread.php?t=321993)
@@ -89,7 +89,7 @@ chmod +x ~/game/l4d2/start.sh
 - **l4d2_kill_mvp** 击杀排名插件，命令`!mvp`，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2666056&postcount=9)
 - **l4d2_melee_in_the_saferoom** 安全屋刷近战，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2719475&postcount=500)
 - **l4d2_skill_detect** smoker tongue cut、skeet hunter 等骚操作提示，来源：[点击](https://github.com/SirPlease/L4D2-Competitive-Rework/blob/master/addons/sourcemod/scripting/l4d2_skill_detect.sp)
-- **l4dinfectedbots** 多特插件，来源：[点击](https://github.com/9-BAKA/sourcemod/blob/master/l4dinfectedbots.sp)
+- **l4dinfectedbots** 多特插件，来源：[点击](https://github.com/fbef0102/L4D1_2-Plugins/tree/master/l4dinfectedbots)
 - **sm_RestartEmpty** 空服后重启服务器，来源：[点击](https://forums.alliedmods.net/showthread.php?t=315367)
 - **logcommands** 客户端聊天、命令记录，来源：[点击](https://github.com/Franc1sco/Commands-Logger)
 - **rygive** 另一个管理员刷物品、特感插件，命令`!rygive`，来源QQ群
