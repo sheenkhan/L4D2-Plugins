@@ -103,6 +103,7 @@ chmod +x ~/game/l4d2/start.sh
 - **lerpmonitor** 跟踪、显示玩家lerp值，来源：[点击](https://github.com/SirPlease/L4D2-Competitive-Rework/blob/master/addons/sourcemod/scripting/lerpmonitor.sp)
 - **sam_vs** 自动踢闲置玩家，来源：[点击](https://github.com/raziEiL/SourceMod/blob/master/released/sam_vs.sp)
 - **UnreserveLobby** 移除大厅匹配，来源：[点击](https://github.com/deximy/PlusMod/blob/master/addons/sourcemod/scripting/UnreserveLobby.sp)
+- **FollowTarget_Detour** 修复因切换团队导致的随机崩溃问题，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2725811&postcount=19)
 
 ## 其他说明
 
