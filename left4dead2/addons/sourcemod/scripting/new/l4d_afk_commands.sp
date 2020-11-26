@@ -36,6 +36,7 @@ public OnPluginStart()
 public Action:BlockIdle(client, const String:command[], argc)
 {
 	PrintHintText(client, "闲置请用 !away 命令");
+	return Plugin_Handled;
 }
 
 // To spectate
