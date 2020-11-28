@@ -1,13 +1,12 @@
-#define PLUGIN_VERSION		"1.0"
+#define PLUGIN_VERSION		"1.1"
 
 #pragma semicolon 1
 #pragma newdecls required
 
 #include <sourcemod>
-#include <sdktools>
 #include <dhooks>
 
-#define DEBUG 1
+#define DEBUG 0
 #define GAMEDATA		"FollowTarget_Detour"
 
 public Plugin myinfo =
@@ -21,6 +20,7 @@ public Plugin myinfo =
 
 Handle hDetour;
 int g_pEntityList;
+int g_camIndex;
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
@@ -68,6 +68,9 @@ int GetEntityListPtr(Handle hGameData)
 	int pFunc = view_as<int>(GameConfGetAddress(hGameData, "CMoveableCamera::FollowTarget"));
 	if( pFunc == 0 ) SetFailState("Failed to find \"CMoveableCamera::FollowTarget\" signature.");
 
+	g_camIndex = GameConfGetOffset(hGameData, "Camera_Index");
+	if( g_camIndex == -1 ) SetFailState("Failed to load \"Camera_Index\" value.");
+	
 	int iOffsetOpcode = GameConfGetOffset(hGameData, "g_pEntityList_Opcode_Offset");
 	if( iOffsetOpcode == -1 ) SetFailState("Failed to load \"g_pEntityList_Opcode_Offset\" offset.");
 	
@@ -115,12 +118,12 @@ bool CameraHasTarget(int pCamera) // thanks to @TheTrick for helping with disass
 	*/
 	
 	int camAddr, entIndex, serial_cam, serial_cli, cliAddr;
-
+	
 	if( pCamera && IsValidEntity(pCamera) )
 	{
 		camAddr = view_as<int>(GetEntityAddress(pCamera));
 		
-		int bf = SafeDeref( camAddr + 281*4 ); // bit-field, holding client index + serial
+		int bf = SafeDeref( camAddr + g_camIndex*4 ); // bit-field, holding client index + serial
 		
 		entIndex = bf & 0xFFF;
 		serial_cam = bf >> 12;
