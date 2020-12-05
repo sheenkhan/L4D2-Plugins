@@ -110,14 +110,14 @@
 	{
 		"en"			"Attention! You can type !zs to suicide if get stuck or too far from survivors."
 		"zho"			"注意!卡住、無法通過障礙物可於聊天視窗輸入!zs自殺."
-		"chi"			"注意!卡住或者无法通过障碍物时可于聊天窗输入!zs自杀."
+		"chi"			"注意!卡住或者无法通过障碍物时可于聊天窗输入!tgzs自杀."
 	}
 	"Hud INFO"
 	{
 		"#format"		"{1:s}"
 		"en"			"This server runs Infected Bots v{1} - say !infhud to toggle HUD on/off"
 		"zho"			"這個伺服器運行 多特感插件(版本: {1}) - 輸入 !infhud 打開/關閉 特感介面"
-		"chi"			"这个伺服器运行 多特感插件(版本: {1}) - 输入 !infhud 打开/关闭 特感界面"
+		"chi"			"!infhud 打开/关闭 特感HUD"
 	}
 	"Hud Disable"
 	{

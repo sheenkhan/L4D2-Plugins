@@ -1,4 +1,569 @@
+/********************************************************************************************
+* Plugin	: L4D/L4D2 InfectedBots (Versus Coop/Coop Versus)
+* Version	: 2.4.6
+* Game		: Left 4 Dead 1 & 2
+* Author	: djromero (SkyDavid, David) and MI 5 and Harry Potter
+* Website	: https://forums.alliedmods.net/showpost.php?p=2699220&postcount=1371
+* 
+* Purpose	: This plugin spawns infected bots in L4D1/2, and gives greater control of the infected bots in L4D1/L4D2.
+* WARNING	: Please use sourcemod's latest 1.10 branch snapshot. 
+* REQUIRE	: left4dhooks  (https://forums.alliedmods.net/showthread.php?p=2684862)
+* Version 2.4.6
+*	   - Signature fix for 12/2/2020 update. (TLS team, please stop unuseless update)
+*
+* Version 2.4.5
+*	   - survivor glow color issue in coop/survival mode.
+*	   - add "FlashlightIsOn" signature in l4d2, add "FlashlightIsOn" offset in l4d1.
+		(Thanks to Machine: https://forums.alliedmods.net/member.php?u=74752)
+*	   - Light up SI ladders in coop/realism/survival. mode for human infected players. (l4d2 only)
 
+* Version 2.4.4
+*	   - fixed plugin not working if player disconnects when map change.
+* 
+* Version 2.4.3
+*	   - Add The last stand new convar "z_finale_spawn_mob_safety_range".
+*
+* Version 2.4.2
+*	   - fixed infected bot got kicked issue sometimes.
+*
+* Version 2.4.1
+*	   - Update gamedata, credit to Lux: https://forums.alliedmods.net/showthread.php?p=2714236
+*
+* Version 2.4.0
+*	   - Fixed no common infected issue sometimes.
+*
+* Version 2.3.9
+*	   - Update Gamedata for L4D2 "The Last Stand" update. 
+*		(Thanks to Shadowysn's work, [L4D1/2] Direct Infected Spawn (Limit-Bypass), https://forums.alliedmods.net/showthread.php?t=320849)
+*	   - Remove infected hud when you are spectator.
+*
+* Version 2.3.8
+*	   - Fixed Native "L4D2_SpawnWitchBride" was not found in l4d1.
+*	   - Fixed L4D2 ConVars Invalid convar handle in l4d1.
+*	   - Fixed L4D2 ConVars signature not found in l4d1.
+*
+* Version 2.3.7
+*	   - Fixed Wrong Zombie Class.
+*	   - prevent memory leak handle and timer.
+*	   - spawn Witch bride in the passing map 1 (spawning normal witch in this map will crash server).
+*	   - Disable survivor glow when no infected players. Enable survivor glow when there are infected players in coop/realism/survival. mode
+*	   - Fixed no common spawning issue when "l4d_infectedbots_adjust_commonlimit_enable" is 0
+*
+* Version 2.3.6
+*	   - require left4dhooks (https://forums.alliedmods.net/showthread.php?p=2684862)
+*	   - update gamedata, credit to Shadowysn's work (https://forums.alliedmods.net/showthread.php?t=320849)
+*	   - improve SI spawing code.
+*	   - support sourcemod's latest 1.10 or above, time to upgrade and get a dedicated server
+*
+* Version 2.3.5
+*	   - light up SI ladders in coop/realism/survival. mode for human infected players. (didn't work if you host a listen server)
+*	   - remove convar "music_manager" setting.
+*	   - add survivor glow in coop/realism/survival. mode for human infected players.
+*
+* Version 2.3.4
+*	   - fixed special limit keep adding issue when map change.
+*	   - fixed Invalid timer handle.
+*
+* Version 2.3.3
+*	   - fixed Invalid timer handle.
+*	   - fixed colddown timer issue.
+*	   - fixed wrong special limit if numbers of alive survivors are less then 4
+*	   - fixed l4d1 doesn't have "z_finale_spawn_tank_safety_range" convar 
+*	   - update translation
+*
+* Version 2.3.2
+*	   - control zombie common limit.
+*	   - Add Convar "l4d_infectedbots_adjust_commonlimit_enable"
+*	   - Add Convar "l4d_infectedbots_default_commonlimit"
+*	   - Add Convar "l4d_infectedbots_add_commonlimit_scale"
+*	   - Add Convar "l4d_infectedbots_add_commonlimit"
+*	   - update translation.
+*	   - fixed "l4d_infectedbots_coordination" and "l4d_infectedbots_spawns_disabled_tank" convar.
+*	   - fixed no bot spawning when infected bot got kicked.
+*	   - Deleted "l4d_infectedbots_director_spawn" Convar
+*	   - fixed music glitch, set convar "music_manager" to 0 when playing infected team in coop/survival/realism, this would turn off l4d music system.
+*
+* Version 2.3.1
+*	   - added reward sound in coop/survival/realism for real infected player.
+*	   - prevet real infected player from fall damage in coop/survival/realism.
+*
+* Version 2.3.0
+*	   - fixed client console error "Material effects/spawn_sphere has bad reference count 0 when being bound" spam when playing infected in non-versus mode.
+*	   - special max limit now counts tank in all gamemode.
+*	   - added PlayerLeftStartTimer.
+*	   - fixed no infected bots issue when reload/load this plugin during the game.
+*	   - added new event "round_end", "map_transition", "mission_lost", "finale_vehicle_leaving" as round end.
+*	   - fixed special max limit not correct when map change or reload/load this plugin during the game .
+*	   - check infected team max slots limit for players when player changes team to infected team in coop/realism/survival.
+*	   - deleted TankFrustStop.
+*	   - added player ghost check when tank player frustrated.
+*	   - fixed Ghost TankBugFix in coop/realism.
+*	   - updated gamedata, add signature "NextBotCreatePlayerBot<Tank>"
+*
+* Version 2.2.7
+*	   - fixed bug that wrong respawn timer when playing infected in coop/realism/survival mode.
+*
+* Version 2.2.6
+*	   - adjust special limit and tank health depends on 4+ ALIVE survivor players"
+*	   - port l4d1
+*	   - 10 seconds can not suicide after infected player spawn
+*
+* Version 2.2.5
+*	   - Add Convar "l4d_infectedbots_sm_zs_disable_gamemode".
+*	   - Fixed "l4d_infectedbots_coordination" not working with tank.
+*
+* Version 2.2.4
+*	   - Add Translation.
+*	   - Fixed "l4d_infectedbots_coordination" not working.
+*	   - Improve new syntax code.
+*	   - Add Translation.
+*
+* Version 2.2.3
+*	   - Add Convar "l4d_infectedbots_adjust_tankhealth_enable"
+*
+* Version 2.2.2
+*	   - Fixed l4d_infectedbots_safe_spawn error
+*	   - Add Convar "l4d_infectedbots_tank_spawn_probability"
+*	   - Fixed Spawn Witch error
+*
+* Version 2.2.1
+*	   - Infected Player can't suicide if he got survivor
+*	   - Kill Tank if tank player frustrated in coop/survival
+*	   - Player will be killed if enter ghost state in coop/survival
+*	   - Removed Convar "l4d_infectedbots_ghost_spawn"
+*
+* Version 2.2.0
+*	   - Convert all to New Syntax
+*	   - Add Convar "l4d_infectedbots_reduced_spawn_times_on_player"
+*	   - Add Convar "l4d_infectedbots_safe_spawn"
+*	   - Add Convar "l4d_infectedbots_spawn_range_min" 
+*	   - Add Convar "l4d_infectedbots_spawn_range_max"
+*	   - Add Convar "l4d_infectedbots_spawn_range_final"
+*	   - Add Convar "l4d_infectedbots_witch_spawn_time_max",
+*	   - Add Convar "l4d_infectedbots_witch_spawn_time_min"
+*	   - Add Convar "l4d_infectedbots_witch_spawn_final"
+*	   - Add Convar "l4d_infectedbots_witch_lifespan"
+*	   - Add Convar "l4d_infectedbots_add_specials_scale"
+*	   - Add Convar "l4d_infectedbots_add_tankhealth_scale"
+*
+* Version 2.1.5
+*	   - Add sm_zlimit - control max special zombies limit (adm only)
+*	   - Add sm_timer - control special zombies spawn timer (adm only)
+*	   - Removed TurnNightVisionOn, use Another TurnFlashlightOn Model without signature
+* 
+* Version 2.1.4
+*	   - Fixed "l4d_infectedbots_max_specials" and "l4d_infectedbots_add_specials" not working 
+*
+* Version 2.1.3
+*	   - Add Convar "l4d_infectedbots_witch_max_limit", Sets the maximum limit for witches spawned by the plugin (does not affect director witches)
+*	   - Remove TurnFlashlightOn since TurnFlashlightOn signature is broken and cause server crash
+*	   - Add TurnNightVisionOn for infected player in coop/survival
+*	   - Add sm_zs for infected player to suicide if stuck
+*	   
+* Version 2.1.2
+*	   - Fixed tank spawn bug
+*	   - Fixed Not enough space on the stack "BotTypeNeeded"
+*
+* Version 2.1.1
+* 	   - Defines how many special infected according to current player numbers
+* 	   - Defines Tank Health according to current player numbers
+* 
+* Version 2.1.0
+* 	   - Remove some Ai improvements cvar
+* 	   
+* Version 2.0.0
+* 	   - Fixed error that would occur on OnPluginEnd
+* 
+* Version 1.9.9
+* 	   - Fixed bug where the plugin would break under the new DLC
+* 
+* Version 1.9.8
+* 	   
+* 	   Cvars Renamed:
+*	   - l4d_infectedbots_infected_team_joinable has been renamed to l4d_infectedbots_coop_versus
+* 	   - l4d_infectedbots_admins_only has been renamed to l4d_infectedbots_admin_coop_versus
+* 	   - l4d_infectedbots_jointeams_announce has been renamed to l4d_infectedbots_coop_versus_announce
+* 	   - l4d_infectedbots_human_coop_survival_limit has been renamed to l4d_infectedbots_coop_versus_human_limit
+* 	   - l4d_infectedbots_coop_survival_tank_playable has been renamed to l4d_infectedbots_coop_versus_tank_playable
+* 	   
+* 	   - Added l4d_infectedbots_versus_coop cvar, forces all players onto the infected side in versus against survivor bots
+* 	   - Changed the Round Start event trigger
+* 	   - l4d_infectedbots_adjust_spawn_times cvar added, if set to 1, it adjusts the spawn timers depending on the gamemode (depends on infected players in versus, survivors in coop)
+* 	   - Enhanced Jockey and Spitter AI for versus (Removed delay between jockey jumps, and spitter now attacks the moment she recharges)
+* 	   - Director class limits for survival that are changed using an server config  at startup will no longer reset to their defaults
+* 	   - l4d_infectedbots_admin_coop_versus and l4d_infectedbots_coop_versus_announce is now defaulted to 0 (off)
+* 	   - Fixed bug in scavenge where bots would not spawn
+* 
+* Version 1.9.7
+* 	   - Added compatibilty for Four Swordsmen, Hard Eight, Healthapocalypse and Gib Fest
+* 	   - Fixed bug created by Valve that would ghost the tank if there was an infected player in coop/survival
+* 	   - Removed l4d_infectedbots_instant_spawns cvar and replaced it with l4d_infectedbots_initial_spawn_timer
+* 	   - Changed how the cheat command found valid clients
+* 
+* Version 1.9.6
+* 	   - Fixed bug in L4D 1 where the map would restart after completion
+* 	   - Added Tank spawning to the plugin with cvar l4d_infectedbots_tank_limit
+* 	   - Added support for Versus Survival
+* 	   - Plugin class limits no longer affect director spawn limits due to the director not obeying the limits (ie: l4d_infectedbots_boomer_limit no longer affects z_boomer_limit)
+* 
+* Version 1.9.5
+* 	   - Removed incorrect gamemode message, plugin will assume unknown gamemodes/mutations are based on coop
+* 	   - Fixed spitter acid glitch
+* 	   - Compatible with "Headshot!" mutation
+* 	   - Added cvar l4d_infectedbots_spawns_disabled_tank: disables infected bot spawning when a tank is in play
+* 
+* Version 1.9.4
+* 	   - Compatible with new mutations: Last Man On Earth, Chainsaw Massacre and Room for One
+* 
+* Version 1.9.3
+* 	   - Added support for chainsaws gamemode
+* 	   - Changed how the plugin detected dead/alive players
+* 	   - Changed code that used GetEntData/SetEntData to GetEntProp/SetEntProp
+* 	   - Fixed typo in detecting the game
+* 	   - Fixed an error caused by line 4300
+* 
+* Version 1.9.2
+* 	   - Fixed bug with clients joining infected automatically when l4d_infectedbots_admins_only was set to 1
+* 	   - Fixed some error messages that pop up from certain events
+* 	   - Re-added feature: Bots in versus or scavenger will now ghost before they spawn completely
+* 	   - Added cvar: l4d_infectedbots_ghost_time
+*	   - Renamed cvar: l4d_infectedbots_idle_time_before_slay to l4d_infectedbots_lifespan 
+* 	   - Removed cvar: l4d_infectedbots_timer_hurt_before_slay (it's now apart of l4d_infectedbots_lifespan)
+* 	   - l4d_infectedbots_lifespan timer now kicks instead of slaying the infected
+* 	   - If an infected sees the survivors when his lifespan timer is up, the timer will be made anew (prevents infected being kicked while they are attacking or nearby)
+* 	   - (for coop/survival only) When a tank spawns and then kicked for a player to take over, there is now a check to see if the tank for the player to take over actually spawned successfully
+* 	   - Plugin is now compatible with the new mutation gamemode and any further mutations
+* 
+* Version 1.9.1 V3
+* 	   - Fixed bug with bot spawns (especially with 4+ infected bots)
+* 	   - Fixed an error that was caused when the plugin was unloaded
+* 
+* Version 1.9.1 V2
+* 	   - Fixed bug with server hibernation that was caused by rewrite of round start code (thanks Lexantis)
+* 
+* Version 1.9.1
+* 	   - Changed Round start code which fixed a bug with survival (and possibly other gamemodes)
+* 	   - Changed how the class limit cvars work, they can now be used to alter director spawning cvars (z_smoker_limit, z_hunter_limit, etc.)
+* 	   - l4d_infectedbots_hunter_limit cvar added to L4D
+* 	   - Added cvar l4d_infectedbots_instant_spawns, allows the plugin to instantly spawn the infected at the start of a map and the start of finales
+* 	   - Fixed bug where survivors were slayed for no reason
+* 	   - Fixed bug where Valve's bots would still spawn on certain maps
+* 	   - Added cvar l4d_infectedbots_human_coop_survival_limit
+* 	   - Added cvar l4d_infectedbots_admins_only
+* 	   - Changed how the "!js" function worked, no longer uses jointeam (NEW GAMEDATA FILE BECAUSE OF THIS)
+* 	   - Class limit cvars by this plugin no longer affect z_versus class player limits (l4d_infectedbots_smoker_limit for example no longer affects z_versus_smoker_limit)
+*	   - Altered descriptions of the class limit cvars
+* 
+* Version 1.9.0
+*      - Workaround implemented to get around Coop Limit (L4D2)
+* 	   - REALLY fixed the 4+1 bug now
+* 	   - REALLY fixed the survivor bots running out of the safe room bug
+* 	   - Fixed bug where setting l4d_infectedbots_spawn_time to 5 or below would not spawn bots
+* 	   - Removed cvar l4d_infectedbots_spawn_time and added cvars l4d_infectedbots_spawn_max_time and l4dinfectedbots_spawn_min_time
+*	   - Changed code on how the game is detected on startup
+* 	   - Removed FCVAR_NOTIFY from all cvars except the version cvar
+* 	   - If l4d_infectedbots_infected_team_joinable is 0, plugin will not set sb_all_bot_team to 1
+* 	   - Infected HUD can now display multiple tanks on fire along with the tank's health
+* 	   - Coop tank takeover now supports multiple tanks
+* 	   - Fixed bug where some players would not ghost in coop when they first spawn in a map
+* 	   - Removed most instances where the plugin would cause a BotType error
+* 	   - L4D bot spawning changed, now random like L4D2 instead of prioritized classes
+* 	   - Fixed bug where players would be stuck at READY and never spawn
+* 
+* Version 1.8.9
+* 	   - Gamedata file uses Signatures instead of offsets
+* 	   - Enabling Director Spawning in Versus will activate Valve's bots
+* 	   - Reverted back to original way of joining survivors (jointeam instead of sb_takecontrol)
+* 	   - Bots no longer run out of the safe room before a player joins into the game
+* 	   - Fixed bug when a tank spawned and its special infected taken over by a bot, would be able to spawn again if it died such as 4+1 bot
+* 
+* Version 1.8.8
+* 	   - Disables Valve's versus bots automatically
+* 	   - Based on AtomicStryker's version (fixes z_spawn bug along with gamemode bug)
+* 	   - Removed L4D seperate plugin, this one plugin supports both
+* 	   - Fixed strange ghost speed bug
+* 	   - Added Flashlights and FreeSpawning for both L4D and L4D2 without resorting to changing gamemodes
+* 	   - Now efficiently unlocks a versus start door when there are no players on infected (L4D 1 only)
+* 
+* Version 1.8.7
+* 	   - Fixed Infected players not spawning correctly
+* 
+* Version 1.8.6
+* 	   - Added a timer to the Gamemode ConVarHook to ensure compatitbilty with other gamemode changing plugins
+* 	   - Fight or die code added by AtomicStryker (kills idle bots, very useful for coordination cvar) along with two new cvars: l4d2_infectedbots_idle_time_before_slay and l4d2_infectedbots_timer_hurt_before_slay
+* 	   - Fixed bug where the plugin would return the BotType error even though the sum of the class limits matched that of the cvar max specials
+* 	   - When the plugin is unloaded, it resets the convars that it changed
+* 	   - Fixed bug where if Free Spawning and Director Spawning were on, it would cause the gamemode to stay on versus
+* 
+* Version 1.8.5
+* 	   - Optimizations by AtomicStryker
+* 	   - Removed "Multiple tanks" code from plugin
+* 	   - Redone tank kicking code
+* 	   - Redone tank health fix (Thanks AtomicStryker!)
+* 
+* Version 1.8.4
+* 	   - Adapted plugin to new gamemode "teamversus" (4x4 versus matchmaking)
+*	   - Fixed bug where Survivor bots didn't have their health bonuses count 
+* 	   - Added FCVAR_NOTIFY to cvars to prevent clients from changing server cvars
+* 
+* Version 1.8.3
+* 	   - Enhanced Hunter AI (Hunter bots pounce farther, versus only)
+* 	   - Model detection methods have been replaced with class detections (Compatible with Character Select Menu)
+* 	   - Fixed VersusDoorUnlocker not working on the second round
+* 	   - Added cvar l4d_infectedbots_coordination (bots will wait until all other bot spawn timers are 0 and then spawn at once)
+* 
+* Version 1.8.2
+* 	   - Added Flashlights to the infected
+* 	   - Prevented additional music from playing when spawning as an infected
+* 	   - Redid the free spawning system, more robust and effective
+* 	   - Fixed bug where human tanks would break z_max_player_zombies (Now prevents players from joining a full infected team in versus when a tank spawns)
+* 	   - Redid the VersusDoorUnlocker, now activates without restrictions
+* 	   - Fixed bug where tanks would keep spawning over and over
+* 	   - Fixed bug where the HUD would display the tank on fire even though it's not
+* 	   - Increased default spawn time to 30 seconds
+* 
+* Version 1.8.1 Fix V1
+* 	   - Changed safe room detection (fixes Crash Course and custom maps) (Thanks AtomicStryker!)
+* 
+* Version 1.8.1
+* 	   - Reverted back to the old kicking system
+* 	   - Fixed Tank on fire timer for survival
+* 	   - Survivor players can no longer join a full infected team in versus when theres a tank in play
+* 	   - When a tank spawns in coop, they are not taken over by a player instantly; instead they are stationary until the tank moves, and then a player takes over (Thanks AtomicStryker!)
+* 
+* Version 1.8.0
+* 	   - Fixed bug where the sphere bubbles would come back after the player dies
+* 	   - Fixed additional bugs coming from the "mp_gamemode/server.cfg" bug
+* 	   - Now checks if the admincheats plugin is installed and adapts
+* 	   - Fixed Free spawn bug that prevent players from spawning as ghosts on the third map (or higher) on a campaign
+* 	   - Fixed bug with spawn restrictions (was counting dead players as alive)
+* 	   - Added ConVarHooks to Infected HUD cvars (will take effect immediately after being changed)
+* 	   - Survivor Bots won't move out of the safe room until the player is fully in game
+* 	   - Bots will not be shown on the infected HUD when they are not supposed to be (being replaced by a player on director spawn mode, or a tank being kicked for a player tank to take over)
+* 
+* Version 1.7.9
+* 	   - Fixed a rare bug where if a map changed and director spawning is on, it would not allow the infected to be playable
+* 	   - Removed Sphere bubbles for infected and spectators
+* 	   - Modified Spawn restriction system
+* 	   - Fixed bug where changing class limits on the spot would not take effect immediately
+* 	   - Removed infected bot ghosts in versus, caused too many bugs
+* 	   - Director spawn can now be changed in-game without a restart
+* 	   - The Gamemode being changed no longer needs a restart
+* 	   - Fixed bug where if admincheats is installed and an admin picked to spawn infected did not have root, would not spawn the infected
+* 	   - Fixed bug where players could not spawn as ghosts in versus if the gamemode was set in a server.cfg instead of the l4d dedicated server tool (which still has adverse effects, plugin or not)
+* 
+* Version 1.7.8
+* 	   - Removed The Dedibots, Director and The Spawner, from spec, the bots still spawn and is still compatible with admincheats (fixes 7/8 human limit reached problem)
+* 	   - Changed the format of some of the announcements
+* 	   - Reduced size of HUD
+* 	   - HUD will NOT show infected players unless there are more than 5 infected players on the team (Versus only)
+* 	   - KillInfected function now only applies to survival at round start
+* 	   - Fixed Tank turning into hunter problem
+* 	   - Fixed Special Smoker bug and other ghost related problems
+* 	   - Fixed music glitch where certain pieces of music would keep playing over and over
+* 	   - Fixed bug when a SI bot dies in versus with director spawning on, it would keep spawning that bot
+* 	   - Fixed 1 health point bug in director spawning mode
+* 	   - Fixed Ghost spawning bug in director spawning mode where all ghosts would spawn at once
+* 	   - Fixed Coop Tank lottery starting for versus
+* 	   - Fixed Client 0 error with the Versus door unlocker
+* 	   - Added cvar: l4d_infectedbots_jointeams_announce
+* 
+* Version 1.7.7
+* 	   - Support for admincheats (Thanks Whosat for this!)
+* 	   - Reduced Versus checkpoint door unlocker timer to 10 seconds (no longer shows the message)
+* 	   - Redone Versus door buster, now it simply unlocks the door
+* 	   - Fixed Director Spawning bug when free spawn is turned on
+* 	   - Added spawn timer to Director Spawning mode to prevent one player from taking all the bots
+* 	   - Now shows respawn timers for bots in Versus
+* 	   - When a player takes over a tank in coop/survival, the SI no longer disappears
+* 	   - Redone Tank Lottery (Thanks AtomicStryker!)
+* 	   - There is no limit on player tanks now
+* 	   - Entity errors should be fixed, valid checks implemented
+* 	   - Cvars that were changed by the plugin can now be changed with a server.cfg
+*      - Director Spawning now works correctly when the value is changed from being 0 or 1
+* 	   - Infected HUD now shows the health of the infected, rather than saying "ALIVE"
+* 	   - Fixed Ghost bug on Survival start after a round (Kills all ghosts)
+* 	   - Tank Health now shown properly in infected HUD
+* 	   - Changed details of the infected HUD when Director Spawning is on
+* 	   - Reduced the chances of the stats board appearing
+* 
+* Version 1.7.6
+* 	   - Finale Glitch is fixed completely, no longer runs on timers
+* 	   - Fixed bug with spawning when Director Spawning is on
+* 	   - Added cvar: l4d_infectedbots_stats_board, can turn the stats board on or off after an infected dies
+* 	   - Optimizations here and there
+* 	   - Added a random system where the tank can go to anyone, rather than to the first person on the infected team
+* 	   - Fixed bug where 4 specials would spawn when the tank is playable and on the field
+* 	   - Fixed Free spawn bug where laggy players would not be ghosted
+* 	   - Errors related to "SetEntData" have been fixed
+* 	   - MaxSpecials is no longer linked to Director Spawning
+* 
+* Version 1.7.5
+* 	   - Added command to join survivors (!js)
+* 	   - Removed cvars: l4d_infectedbots_allow_boomer, l4d_infectedbots_allow_smoker and l4d_infectedbots_allow_hunter (redundent with new cvars)
+* 	   - Added cvars: l4d_infectedbots_boomer_limit and l4d_infectedbots_smoker_limit
+*	   - Added cvar: l4d_infectedbots_infected_team_joinable, cvar that can either allow or disallow players from joining the infected team on coop/survival
+* 	   - Cvars renamed:  l4d_infectedbots_max_player_zombies to l4d_infectedbots_max_specials, l4d_infectedbots_tank_playable to l4d_infectedbots_coop_survival_tank_playable
+* 	   - Bug fix with l4d_infectedbots_max_specials and l4d_infectedbots_director_spawn not setting correctly when the server first starts up
+* 	   - Improved Boomer AI in versus (no longer sits there for a second when he is seen)
+* 	   - Autoconfig (was applied in 1.7.4, just wasn't shown in the changelog) Be sure to delete your old one
+* 	   - Reduced the chances of the director misplacing a bot
+* 	   - If the tank is playable in coop or survival, a player will be picked as the tank, regardless of the player's status
+* 	   - Fixed bug where the plugin may return "[L4D] Infected Bots: CreateFakeClient returned 0 -- Infected bot was not spawned"
+* 	   - Removed giving health to infected when they spawn, they no longer need this as Valve fixed this bug
+* 	   - Tank_killed game event was not firing due to the tank not being spawned by the director, this has been fixed by setting it in the player_death event and checking to see if it was a tank
+* 	   - Fixed human infected players causing problems with infected bot spawning
+* 	   - Added cvar: l4d_infectedbots_free_spawn which allows the spawning in coop/survival to be like versus (Thanks AtomicStryker for using some of your code from your infected ghost everywhere plugin!)
+*	   - If there is only one survivor player in versus, the safe room door will be UTTERLY DESTROYED.    
+* 	   - Open slots will be available to tanks by automatically increasing the max infected limit and decreasing when the tanks are killed
+*	   - Bots were not spawning during a finale. This bug has been fixed.
+* 	   - Fixed Survivor death finale glitch which would cause all player infected to freeze and not spawn
+* 	   - Added a HUD that shows stats about Infected Players of when they spawn (from Durzel's Infected HUD plugin)
+* 	   - Priority system added to the spawning in coop/survival, no longer does the first infected player always get the first infected bot that spawns
+* 	   - Modified Spawn Restrictions
+* 	   - Infected bots in versus now spawn as ghosts, and fully spawn two seconds later
+* 	   - Removed commands that kicked with ServerCommand, this was causing crashes
+* 	   - Added a check in coop/survival to put players on infected when they first join if the survivor team is full
+* 	   - Removed cvar: l4d_infectedbots_hunter_limit
+* 
+* Version 1.7.4
+* 	   - Fixed bots spawning too fast
+* 	   - Completely fixed Ghost bug (Ghosts will stay ghosts until the play spawns them)
+* 	   - New cvar "l4d_infectedbots_tank_playable" that allows tanks to be playable on coop/survival
+* 
+* Version 1.7.3
+* 	   - Removed timers altogether and implemented the "old" system
+* 	   - Fixed server hibernation problem
+* 	   - Fixed error messages saying "Could not use ent_fire without cheats"
+* 	   - Fixed Ghost spawning infront of survivors
+* 	   - Set the spawn time to 25 seconds as default
+* 	   - Fixed Checking bot mechanism
+* 
+* Version 1.7.2a
+* 	   - Fixed bots not spawning after a checkpoint
+* 	   - Fixed handle error
+* 
+* Version 1.7.2
+*      - Removed autoconfig for plugin (delete your autoconfig for this plugin if you have one)
+*      - Reintroduced coop/survival playable spawns
+*      - spawns at conistent intervals of 20 seconds
+*      - Overhauled coop special infected cvar dectection, use z_versus_boomer_limit, z_versus_smoker_limit, and l4d_infectedbots_versus_hunter_limit to alter amount of SI in coop (DO NOT USE THESE CVARS IF THE DIRECTOR IS SPAWNING THE BOTS! USE THE STANDARD COOP CVARS)
+*      - Timers implemented for preventing the SI from spawning right at the start
+*      - Fixed bug in 1.7.1 where the improved SI AI would reset to old after a map change
+* 	   - Added a check on game start to prevent survivor bots from leaving the safe room too early when a player connects
+* 	   - Added cvar to control the spawn time of the infected bots (can change at anytime and will take effect at the moment of change)
+* 	   - Added cvar to have the director control the spawns (much better coop experience when max zombie players is set above 4), this however removes the option to play as those spawned infected
+*	   - Removed l4d_infectedbots_coop_enabled cvar, l4d_infectedbots_director_spawn now replaces it. You can still use l4d_infectedbots_max_players_zombies
+* 	   - New kicking mechanism added, there shouldn't be a problem with bots going over the limit
+* 	   - Easier to join infected in coop/survival with the sm command "!ji"
+* 	   - Introduced a new kicking mechanism, there shouldn't be more than the max infected unless there is a tank
+* 
+* Version 1.7.1
+*      - Fixed Hunter AI where the hunter would run away and around in circles after getting hit
+*      - Fixed Hunter Spawning where the hunter would spawn normally for 5 minutes into the map and then suddenly won't respawn at all
+*      - An all Survivor Bot team can now pass the areas where they got stuck in (they can move throughout the map on their own now)     
+*      - Changed l4d_versus_hunter_limit to l4d_infectedbots_versus_hunter_limit with a new default of 4
+*      - It is now possible to change l4d_infectedbots_versus_hunter_limit and l4d_infectedbots_max_player_zombies in-game, just be sure to restart the map after change
+*      - Overhauled the plugin, removed coop/survival infected spawn code, code clean up
+* 
+* Version 1.7.0
+*      - Fixed sb_all_bot_team 1 is now set at all times until there are no players in the server.
+*      - Survival/Coop now have playable Special Infected spawns.
+*      - l4d_infectedbots_enabled_on_coop cvar created for those who want control over the plugin during coop/survival maps.
+*      - Able to spectate AI Special Infected in Coop/Survival.
+*      - Better AI (Smoker and Boomer don't sit there for a second and then attack a survivor when its within range).
+*      - Set the number of VS team changes to 99 if its survival or coop, 2 for versus
+*      - Safe Room timer added to coop/survival
+*      - l4d_versus_hunter_limit added to control the amount of hunters in versus
+*      - l4d_infectedbots_max_player_zombies added to increase the max special infected on the map (Bots and players)
+*      - Autoexec created for this plugin
+* 
+* Version 1.6.1
+* 		- Changed some routines to prevent crash on round end.
+* 
+* Version 1.6
+* 		- Finally fixed issue of server hanging on mapchange or when last player leaves.
+* 		  Thx to AcidTester for his help testing this.
+* 		- Added cvar to disable infected bots HUD
+* 
+* Version 1.6
+* 		- Fixed issue of HUD's timer not beign killed after each round.
+* Version 1.5.8
+* 		- Removed the "kickallbots" routine. Used a different method.
+* 
+* Version 1.5.6
+* 		- Rollback on method for detecting if map is VS
+* 
+* Version 1.5.5
+* 		- Fixed some issues with infected boomer bots spawning just after human boomer is killed.
+* 		- Changed method of detecting VS maps to allow non-vs maps to use this plugin.
+* 
+* Version 1.5.4
+* 		- Fixed (now) issue when all players leave and server would keep playing with only
+* 		  survivor/infected bots.
+* 
+* Version 1.5.3
+* 		- Fixed issue when boomer/smoker bots would spawn just after human boomer/smoker was
+* 		  killed. (I had to hook the player_death event as pre, instead of post to be able to
+* 		  check for some info).
+* 		- Added new cvar to control the way you want infected spawn times handled:
+* 			l4d_infectedbots_normalize_spawntime:
+* 				0 (default): Human zombies will use default spawn times (min time if less 
+* 							 than 3 players in team) (min default is 20)
+* 				1		   : Bots and human zombies will have the same spawn time.
+* 							 (max default is 30).
+* 		- Fixed issue when all players leave and server would keep playing with only
+* 	 	  survivor/infected bots.
+* 
+* Version 1.5.2
+* 		- Normalized spawn times for human zombies (min = max).
+* 		- Fixed spawn of extra bot when someone dead becomes a tank. If player was alive, his
+* 		  bot will still remain if he gets a tank.
+* 		- Added 2 new cvars to disallow boomer and/or smoker bots:
+* 			l4d_infectedbots_allow_boomer = 1 (allow, default) / 0 (disallow)
+* 			l4d_infectedbots_allow_smoker = 1 (allow, default) / 0 (disallow)
+* 
+* Version 1.5.1
+* 		- Major bug fixes that caused server to hang (infite loops and threading problems).
+* 
+* Version 1.5
+* 		- Added HUD panel for infected bots. Original idea from: Durzel's Infected HUD plugin.
+* 		- Added validations so that boomers and smokers do not spawn too often. A boomer can
+* 		  only spawn (as a bot) after XX seconds have elapsed since the last one died.
+* 		- Added/fixed some routines/validations to prevent memory leaks.
+* 
+* Version 1.4
+* 		- Infected bots can spawn when a real player is dead or in ghost mode without forcing
+* 		  them (real players) to spawn.
+* 		- Since real players won't be forced to spawn, they won't spawn outside the map or
+* 		  in places they can't get out (where only bots can get out).
+* 
+* Version 1.3
+* 		- No infected bots are spawned if at least one player is in ghost mode. If a bot is 
+* 		  scheduled to spawn but a player is in ghost mode, the bot will spawn no more than
+* 		  5 seconds after the player leaves ghost mode (spawns).
+* 		- Infected bots won't stay AFK if they spawn far away. They will always search for
+* 		  survivors even if they're far from them.
+* 		- Allows survivor's team to be all bots, since we can have all bots on infected's team.
+* 
+* Version 1.2
+* 		- Fixed several bugs while counting players.
+* 		- Added chat message to inform infected players (only) that a new bot has been spawned
+* 
+* Version 1.1.2
+* 		- Fixed crash when counting 
+* 
+* Version 1.1.1
+* 		- Fixed survivor's quick HUD refresh when spawning infected bots
+* 
+* Version 1.1
+* 		- Implemented "give health" command to fix infected's hud & pounce (hunter) when spawns
+* 
+* Version 1.0
+* 		- Initial release.
+* 
+* 
+**********************************************************************************************/
 #pragma semicolon 1
 #pragma newdecls required //強制1.7以後的新語法
 #include <sourcemod>
@@ -7,8 +572,9 @@
 #include <multicolors>
 #undef REQUIRE_PLUGIN
 #include <left4dhooks>
-#define PLUGIN_VERSION "2.4.4"
+#define PLUGIN_VERSION "2.4.6"
 #define DEBUG 0
+#define JRSHZ 0
 
 #define TEAM_SPECTATOR		1
 #define TEAM_SURVIVORS 		2
@@ -127,6 +693,7 @@ ConVar h_ReducedSpawnTimesOnPlayer;
 ConVar h_SpawnTankProbability;
 ConVar h_ZSDisableGamemode;
 ConVar h_CommonLimitAdjust, h_CommonLimit, h_PlayerAddCommonLimitScale, h_PlayerAddCommonLimit,h_common_limit_cvar;
+ConVar h_CoopInfectedPlayerFlashLight;
 
 //Handle
 static Handle PlayerLeftStartTimer = null; //Detect player has left safe area or not
@@ -137,6 +704,7 @@ static Panel pInfHUD = null;
 static Handle usrHUDPref 		= null;	// Stores the client HUD preferences persistently
 Handle FightOrDieTimer[MAXPLAYERS+1] = null; // kill idle bots
 Handle hSpawnWitchTimer = null;
+Handle RestoreColorTimer[MAXPLAYERS+1] = null;
 
 //signature call
 static Handle hSpec = null;
@@ -148,6 +716,7 @@ static Handle hCreateSpitter = null;
 static Handle hCreateJockey = null;
 static Handle hCreateCharger = null;
 static Handle hCreateTank = null;
+static Handle hFlashLightTurnOn = null;
 
 // Stuff related to Durzel's HUD (Panel was redone)
 static int respawnDelay[MAXPLAYERS+1]; 			// Used to store individual player respawn delays after death
@@ -160,7 +729,7 @@ static float fPlayerSpawnEngineTime[MAXENTITIES] = 0.0; //time when real infecte
 int g_iClientColor[MAXPLAYERS+1], g_iClientIndex[MAXPLAYERS+1], g_iLightIndex[MAXPLAYERS+1];
 int iPlayerTeam[MAXPLAYERS+1];
 bool g_bSafeSpawn, g_bTankHealthAdjust, g_bVersusCoop, g_bJoinableTeams, g_bCoopPlayableTank , g_bJoinableTeamsAnnounce,
-	g_bInfHUD, g_bAnnounce , g_bAdminJoinInfected, g_bAdjustSpawnTimes, g_bCommonLimitAdjust;
+	g_bInfHUD, g_bAnnounce , g_bAdminJoinInfected, g_bAdjustSpawnTimes, g_bCommonLimitAdjust, g_bCoopInfectedPlayerFlashLight;
 int g_iZSDisableGamemode, g_iTankHealth, g_iInfectedSpawnTimeMax, g_iInfectedSpawnTimeMin, g_iHumanCoopLimit,
 	g_iReducedSpawnTimesOnPlayer, g_iWitchPeriodMax, g_iWitchPeriodMin, g_iSpawnTankProbability, g_iCommonLimit;
 int g_iPlayerSpawn, g_bMapStarted, g_bSpawnWitchBride;
@@ -225,13 +794,14 @@ public void OnPluginStart()
 	// will not be in the final versions.
 	
 	// Add a sourcemod command so players can easily join infected in coop/survival
-
+	RegConsoleCmd("sm_inf", JoinInfected);
+	RegConsoleCmd("sm_tgzs", ForceInfectedSuicide,"suicide myself (if infected get stuck or somthing)");
 	RegAdminCmd("sm_zlimit", Console_ZLimit, ADMFLAG_SLAY,"control max special zombies limit");
 	RegAdminCmd("sm_timer", Console_Timer, ADMFLAG_SLAY,"control special zombies spawn timer");
-	#if DEBUG
-	RegConsoleCmd("sm_jrtg", JoinInfected);
+	#if JRSHZ
 	RegConsoleCmd("sm_jrshz", JoinSurvivors);
-	RegConsoleCmd("sm_tgzs", ForceInfectedSuicide,"suicide myself (if infected get stuck or somthing)");
+	#endif
+	#if DEBUG
 	RegConsoleCmd("sm_sp", JoinSpectator);
 	RegConsoleCmd("sm_gamemode", CheckGameMode);
 	RegConsoleCmd("sm_count", CheckQueue);
@@ -299,6 +869,7 @@ public void OnPluginStart()
 	h_CommonLimit = CreateConVar("l4d_infectedbots_default_commonlimit", "30", "Sets Default zombie common limit.", FCVAR_NOTIFY, true, 1.0); 
 	h_PlayerAddCommonLimitScale = CreateConVar("l4d_infectedbots_add_commonlimit_scale", "1", "If server has more than 4+ alive players, zombie common limit = 'default_commonlimit' + [(alive players - 4) ÷ 'add_commonlimit_scale' × 'add_commonlimit'].", FCVAR_NOTIFY, true, 1.0); 
 	h_PlayerAddCommonLimit = CreateConVar("l4d_infectedbots_add_commonlimit", "2", "If server has more than 4+ alive players, increase the certain value to 'l4d_infectedbots_default_commonlimit' each 'l4d_infectedbots_add_commonlimit_scale' players joins", FCVAR_NOTIFY, true, 0.0); 
+	h_CoopInfectedPlayerFlashLight = CreateConVar("l4d_infectedbots_coop_versus_human_light", "1", "If 1, attaches red flash light to human infected player in coop/survival. (Make it clear which infected bot is controlled by player)", FCVAR_NOTIFY, true, 0.0, true, 1.0); 
 
 	h_GameMode = FindConVar("mp_gamemode");
 	h_GameMode.AddChangeHook(ConVarGameMode);
@@ -335,6 +906,7 @@ public void OnPluginStart()
 	h_WitchKillTime.AddChangeHook(ConVarChanged_Cvars);
 	h_SpawnTankProbability.AddChangeHook(ConVarChanged_Cvars);
 	h_CommonLimit.AddChangeHook(ConVarChanged_Cvars);
+	h_CoopInfectedPlayerFlashLight.AddChangeHook(ConVarChanged_Cvars);
 
 	GetSpawnDisConvars();
 	g_iMaxPlayerZombies = h_MaxPlayerZombies.IntValue;
@@ -360,6 +932,7 @@ public void OnPluginStart()
 	HookEvent("map_transition", evtRoundEnd); //戰役過關到下一關的時候 (沒有觸發round_end)
 	HookEvent("mission_lost", evtRoundEnd); //戰役滅團重來該關卡的時候 (之後有觸發round_end)
 	HookEvent("finale_vehicle_leaving", evtRoundEnd); //救援載具離開之時  (沒有觸發round_end)
+
 	// We hook some events ...
 	HookEvent("player_death", evtPlayerDeath, EventHookMode_Pre);
 	HookEvent("player_team", evtPlayerTeam);
@@ -508,6 +1081,21 @@ public void OnPluginStart()
 		hCreateTank = EndPrepSDKCall();
 		if (hCreateTank == null)
 			SetFailState("Cannot initialize NextBotCreatePlayerBot<Tank> SDKCall, signature is broken.") ;
+		
+		if(L4D2Version)
+		{
+			StartPrepSDKCall(SDKCall_Player);
+			PrepSDKCall_SetFromConf(hGameConf, SDKConf_Signature, "FlashLightTurnOn");
+			hFlashLightTurnOn = EndPrepSDKCall();
+		}
+		else
+		{
+			StartPrepSDKCall(SDKCall_Player);
+			PrepSDKCall_SetFromConf(hGameConf, SDKConf_Virtual, "FlashlightIsOn");
+			hFlashLightTurnOn = EndPrepSDKCall();
+		}
+		if (hFlashLightTurnOn == null)
+			SetFailState("FlashLightTurnOn Signature broken");
 	}
 	else
 	{
@@ -562,6 +1150,7 @@ void GetCvars()
 	g_fWitchKillTime = h_WitchKillTime.FloatValue;
 	g_iSpawnTankProbability = h_SpawnTankProbability.IntValue;
 	g_iCommonLimit = h_CommonLimit.IntValue;
+	g_bCoopInfectedPlayerFlashLight = h_CoopInfectedPlayerFlashLight.BoolValue;
 }
 
 public void ConVarMaxPlayerZombies(ConVar convar, const char[] oldValue, const char[] newValue)
@@ -593,22 +1182,28 @@ public void ConVarGameMode(ConVar convar, const char[] oldValue, const char[] ne
 	TweakSettings();
 
 	bDisableSurvivorModelGlow = true;
-	char mode[64];
-	h_GameMode.GetString(mode, sizeof(mode));
-	for( int i = 1; i <= MaxClients; i++ ) 
+	if(L4D2Version)
 	{
-		RemoveSurvivorModelGlow(i);
-		if(IsClientInGame(i) && !IsFakeClient(i)) SendConVarValue(i, h_GameMode, mode);
-	}
-
-	if(GameMode != 2 && g_bJoinableTeams)
-	{
-		bDisableSurvivorModelGlow = false;
+		static char mode[64];
+		h_GameMode.GetString(mode, sizeof(mode));
 		for( int i = 1; i <= MaxClients; i++ ) 
 		{
-			CreateSurvivorModelGlow(i);
-			if(IsClientInGame(i) && !IsFakeClient(i) && GetClientTeam(i) == TEAM_INFECTED) SendConVarValue(i, h_GameMode, "versus");
-		}	
+			RemoveSurvivorModelGlow(i);
+			if(IsClientInGame(i) && !IsFakeClient(i)) SendConVarValue(i, h_GameMode, mode);
+		}
+	}
+
+	if(L4D2Version)
+	{
+		if(GameMode != 2 && g_bJoinableTeams)
+		{
+			bDisableSurvivorModelGlow = false;
+			for( int i = 1; i <= MaxClients; i++ ) 
+			{
+				CreateSurvivorModelGlow(i);
+				if(IsClientInGame(i) && !IsFakeClient(i) && GetClientTeam(i) == TEAM_INFECTED) SendConVarValue(i, h_GameMode, "versus");
+			}	
+		}
 	}
 }
 
@@ -687,13 +1282,16 @@ public void ConVarCoopVersus(ConVar convar, const char[] oldValue, const char[] 
 			{
 				ResetConVar(FindConVar("sb_all_bot_team"), true, true);
 			}
-			char mode[64];
-			h_GameMode.GetString(mode, sizeof(mode));
-			bDisableSurvivorModelGlow = true;
-			for( int i = 1; i <= MaxClients; i++ )
+			if(L4D2Version)
 			{
-				if(IsClientInGame(i) && !IsFakeClient(i)) SendConVarValue(i, h_GameMode, mode);
-				RemoveSurvivorModelGlow(i);
+				static char mode[64];
+				h_GameMode.GetString(mode, sizeof(mode));
+				bDisableSurvivorModelGlow = true;
+				for( int i = 1; i <= MaxClients; i++ )
+				{
+					if(IsClientInGame(i) && !IsFakeClient(i)) SendConVarValue(i, h_GameMode, mode);
+					RemoveSurvivorModelGlow(i);
+				}
 			}
 		}
 	}
@@ -1152,6 +1750,7 @@ public void OnMapStart()
 	if(StrEqual("c6m1_riverbank", sMap, false))
 		g_bSpawnWitchBride = true;
 
+
 }
 
 public void OnMapEnd()
@@ -1603,18 +2202,17 @@ public Action JoinSpectator(int client, int args)
 
 public Action AnnounceJoinInfected(Handle timer, int client)
 {
-	/*
 	if (IsClientInGame(client) && (!IsFakeClient(client)))
 	{
 		if (g_bJoinableTeamsAnnounce && g_bJoinableTeams && GameMode != 2)
 		{
 			if(g_bAdminJoinInfected)
-				//C_PrintToChat(client,"[{olive}TS{default}] %T","Join infected team in coop/survival/realism(adm only)",client);
+				C_PrintToChat(client,"%T","Join infected team in coop/survival/realism(adm only)",client);
 			else
-				//C_PrintToChat(client,"[{olive}TS{default}] %T","Join infected team in coop/survival/realism",client);
-			//C_PrintToChat(client,"%T","Join survivor team",client);
+				C_PrintToChat(client,"%T","Join infected team in coop/survival/realism",client);
+			C_PrintToChat(client,"%T","Join survivor team",client);
 		}
-	}*/
+	}
 }
 
 public Action evtPlayerSpawn(Event event, const char[] name, bool dontBroadcast) 
@@ -1782,6 +2380,7 @@ public Action evtPlayerDeath(Event event, const char[] name, bool dontBroadcast)
 	if (b_HasRoundEnded || !b_LeftSaveRoom) return Plugin_Continue;
 	
 	delete FightOrDieTimer[client];
+	delete RestoreColorTimer[client];
 	
 	
 	if (!client || !IsClientInGame(client)) return Plugin_Continue;
@@ -1939,17 +2538,20 @@ public Action PlayerChangeTeamCheck(Handle timer,int userid)
 					{
 						if (HumansOnInfected() <= g_iHumanCoopLimit)
 						{
-							//PrintToChatAll("%N Fake versus convar",client);
-							SendConVarValue(client, h_GameMode, "versus");
-							if(bDisableSurvivorModelGlow == true)
+							if(L4D2Version)
 							{
-								bDisableSurvivorModelGlow = false;
-								for( int i = 1; i <= MaxClients; i++ )
+								//PrintToChatAll("%N Fake versus convar",client);
+								SendConVarValue(client, h_GameMode, "versus");
+								if(bDisableSurvivorModelGlow == true)
 								{
-									CreateSurvivorModelGlow(i);
+									bDisableSurvivorModelGlow = false;
+									for( int i = 1; i <= MaxClients; i++ )
+									{
+										CreateSurvivorModelGlow(i);
+									}
 								}
 							}
-
+							
 							return Plugin_Continue;
 						}
 					}
@@ -1963,16 +2565,19 @@ public Action PlayerChangeTeamCheck(Handle timer,int userid)
 			else
 			{
 				iPlayerTeam[client] = iTeam;
-				char mode[64];
-				h_GameMode.GetString(mode, sizeof(mode));
-				SendConVarValue(client, h_GameMode, mode);
-
-				if(!RealPlayersOnInfected() && bDisableSurvivorModelGlow == false)
+				if(L4D2Version)
 				{
-					bDisableSurvivorModelGlow = true;
-					for( int i = 1; i <= MaxClients; i++ )
+					static char mode[64];
+					h_GameMode.GetString(mode, sizeof(mode));
+					SendConVarValue(client, h_GameMode, mode);
+
+					if(!RealPlayersOnInfected() && bDisableSurvivorModelGlow == false)
 					{
-						RemoveSurvivorModelGlow(i);
+						bDisableSurvivorModelGlow = true;
+						for( int i = 1; i <= MaxClients; i++ )
+						{
+							RemoveSurvivorModelGlow(i);
+						}
 					}
 				}
 			}
@@ -2027,6 +2632,9 @@ public Action ColdDown_Timer(Handle timer)
 
 public void OnClientDisconnect(int client)
 {
+	delete FightOrDieTimer[client];
+	delete RestoreColorTimer[client];
+
 	RemoveSurvivorModelGlow(client);
 	
 	if(roundInProgress == false) return;
@@ -2273,16 +2881,20 @@ public Action Event_GotVomit(Event event, const char[] name, bool dontBroadcast)
 	if( IsValidEntRef(entity) )
 	{
 		SetEntProp(entity, Prop_Send, "m_glowColorOverride", 155 + (0 * 256) + (180 * 65536)); //Purple
-		CreateTimer(20.0, RestoreColor_Timer, entity, TIMER_FLAG_NO_MAPCHANGE);
+		
+		delete RestoreColorTimer[client]; RestoreColorTimer[client] = CreateTimer(20.0, Timer_RestoreColor, client);
 	}
 }
 
-public Action RestoreColor_Timer(Handle timer, int entity)
+public Action Timer_RestoreColor(Handle timer, int client)
 {
+	int entity = g_iModelIndex[client];
 	if( IsValidEntRef(entity) )
 	{
-		SetEntProp(entity, Prop_Send, "m_glowColorOverride", 0 + (180 * 256) + (0 * 65536)); //Green
+		if(IsplayerIncap(client)) SetEntProp(entity, Prop_Send, "m_glowColorOverride", 180 + (0 * 256) + (0 * 65536)); //RGB
+		else SetEntProp(entity, Prop_Send, "m_glowColorOverride", 0 + (180 * 256) + (0 * 65536)); //RGB
 	}
+	RestoreColorTimer[client] = null;
 }
 
 public Action KickWitch_Timer(Handle timer, int ref)
@@ -3494,11 +4106,13 @@ public void OnPluginEnd()
 		ResetConVar(FindConVar("sb_all_bot_game"), true, true);
 		ResetConVar(FindConVar("allow_all_bot_survivor_team"), true, true);
 	}
-	char mode[64];
-	h_GameMode.GetString(mode, sizeof(mode));
-	for( int i = 1; i <= MaxClients; i++ )
-		if(IsClientInGame(i) && !IsFakeClient(i)) SendConVarValue(i, h_GameMode, mode);
-	
+	if(L4D2Version)
+	{
+		static char mode[64];
+		h_GameMode.GetString(mode, sizeof(mode));
+		for( int i = 1; i <= MaxClients; i++ )
+			if(IsClientInGame(i) && !IsFakeClient(i)) SendConVarValue(i, h_GameMode, mode);
+	}
 	// Destroy the persistent storage for client HUD preferences
 	delete usrHUDPref;
 	
@@ -3530,7 +4144,7 @@ public Action TimerAnnounce2(Handle timer, int client)
 	{
 		if (GetClientTeam(client) == TEAM_INFECTED && IsPlayerAlive(client))
 		{
-			C_PrintToChat(client, "[{olive}TS{default}] %T","sm_zs",client);
+			//C_PrintToChat(client, "[{olive}TS{default}] %T","sm_zs",client);
 		}
 	}
 }
@@ -4030,49 +4644,56 @@ void TurnFlashlightOn(int client)
 	if (!PlayerIsAlive(client)) return;
 	if (IsFakeClient(client)) return;
 
-	DeleteLight(client);
+	SetEntProp(client, Prop_Send, "m_iTeamNum", 2);
+	SDKCall(hFlashLightTurnOn, client);
+	SetEntProp(client, Prop_Send, "m_iTeamNum", 3);
 
-	// Declares
-	int entity;
-	float vOrigin[3], vAngles[3];
-
-	// Position light
-	vOrigin = view_as<float>(  { 0.5, -1.5, 50.0 });
-	vAngles = view_as<float>(  { -45.0, -45.0, 90.0 });
-
-	// Light_Dynamic
-	entity = MakeLightDynamic(vOrigin, vAngles, client);
-	g_iLightIndex[client] = EntIndexToEntRef(entity);
-
-	if( g_iClientIndex[client] == GetClientUserId(client) )
+	if(g_bCoopInfectedPlayerFlashLight)
 	{
-		SetEntProp(entity, Prop_Send, "m_clrRender", g_iClientColor[client]);
-		AcceptEntityInput(entity, "TurnOff");
+		DeleteLight(client);
+
+		// Declares
+		int entity;
+		float vOrigin[3], vAngles[3];
+
+		// Position light
+		vOrigin = view_as<float>(  { 0.5, -1.5, 50.0 });
+		vAngles = view_as<float>(  { -45.0, -45.0, 90.0 });
+
+		// Light_Dynamic
+		entity = MakeLightDynamic(vOrigin, vAngles, client);
+		g_iLightIndex[client] = EntIndexToEntRef(entity);
+
+		if( g_iClientIndex[client] == GetClientUserId(client) )
+		{
+			SetEntProp(entity, Prop_Send, "m_clrRender", g_iClientColor[client]);
+			AcceptEntityInput(entity, "TurnOff");
+		}
+		else
+		{
+			g_iClientIndex[client] = GetClientUserId(client);
+			g_iClientColor[client] = GetEntProp(entity, Prop_Send, "m_clrRender");
+			AcceptEntityInput(entity, "TurnOff");
+		}
+
+		entity = g_iLightIndex[client];
+		if( !IsValidEntRef(entity) )
+			return;
+
+		// Specified colors
+		char sTempL[12];
+		Format(sTempL, sizeof(sTempL), "185 51 51");
+
+		SetVariantEntity(entity);
+		SetVariantString(sTempL);
+		AcceptEntityInput(entity, "color");
+		AcceptEntityInput(entity, "toggle");
+
+		int color = GetEntProp(entity, Prop_Send, "m_clrRender");
+		if( color != g_iClientColor[client] )
+			AcceptEntityInput(entity, "turnon");
+		g_iClientColor[client] = color;
 	}
-	else
-	{
-		g_iClientIndex[client] = GetClientUserId(client);
-		g_iClientColor[client] = GetEntProp(entity, Prop_Send, "m_clrRender");
-		AcceptEntityInput(entity, "TurnOff");
-	}
-
-	entity = g_iLightIndex[client];
-	if( !IsValidEntRef(entity) )
-		return;
-
-	// Specified colors
-	char sTempL[12];
-	Format(sTempL, sizeof(sTempL), "185 51 51");
-
-	SetVariantEntity(entity);
-	SetVariantString(sTempL);
-	AcceptEntityInput(entity, "color");
-	AcceptEntityInput(entity, "toggle");
-
-	int color = GetEntProp(entity, Prop_Send, "m_clrRender");
-	if( color != g_iClientColor[client] )
-		AcceptEntityInput(entity, "turnon");
-	g_iClientColor[client] = color;
 }
 
 void DeleteLight(int client)
@@ -4351,6 +4972,7 @@ void ResetTimer()
 	{
 		PlayerHasEnteredStart[i] = false;
 		delete FightOrDieTimer[i];
+		delete RestoreColorTimer[i];
 	}
 
 	delete hSpawnWitchTimer;
@@ -4379,7 +5001,8 @@ public Action tmrDelayCreateSurvivorGlow(Handle timer, any client)
 
 public void CreateSurvivorModelGlow(int client)
 {
-	if (!client || 
+	if (!L4D2Version ||
+	!client || 
 	!IsClientInGame(client) || 
 	GetClientTeam(client) != TEAM_SURVIVORS || 
 	!IsPlayerAlive(client) ||
