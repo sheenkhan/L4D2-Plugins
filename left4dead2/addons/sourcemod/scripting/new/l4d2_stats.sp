@@ -262,7 +262,7 @@ public Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 		
 		new lasthealth = g_iLastHealth[victim];
 		g_iDamageDealt[victim][attacker] += lasthealth;
-		
+		/*
 		if (zombieclass == ZC_BOOMER)
 		{
 			// Only happens on mid map plugin load when a boomer is up
@@ -279,8 +279,8 @@ public Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast)
 				KillTimer(g_hBoomerKillTimer);
 				g_hBoomerKillTimer = INVALID_HANDLE;
 			}
-		}
-		else if (zombieclass == ZC_HUNTER && IsPouncing(victim))
+		}*/
+		if (zombieclass == ZC_HUNTER && IsPouncing(victim))
 		{ // Skeet!
 			decl assisters[g_iSurvivorLimit][2];
 			new assister_count, i;
