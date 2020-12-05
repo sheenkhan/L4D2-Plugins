@@ -507,25 +507,25 @@ public OnPluginStart()
     
     
     // version cvar
-    CreateConVar( "sm_skill_detect_version", PLUGIN_VERSION, "Skill detect plugin version.", FCVAR_PLUGIN|FCVAR_NOTIFY|FCVAR_REPLICATED|FCVAR_DONTRECORD );
+    CreateConVar( "sm_skill_detect_version", PLUGIN_VERSION, "Skill detect plugin version.", FCVAR_NONE|FCVAR_NOTIFY|FCVAR_REPLICATED|FCVAR_DONTRECORD );
     
     // cvars: config
     
-    g_hCvarReport = CreateConVar(           "sm_skill_report_enable" ,      "1", "Whether to report in chat (see sm_skill_report_flags).", FCVAR_PLUGIN, true, 0.0, true, 1.0 );
+    g_hCvarReport = CreateConVar(           "sm_skill_report_enable" ,      "1", "Whether to report in chat (see sm_skill_report_flags).", FCVAR_NONE, true, 0.0, true, 1.0 );
     
-    g_hCvarAllowMelee = CreateConVar(       "sm_skill_skeet_allowmelee",    "1", "Whether to count/forward melee skeets.", FCVAR_PLUGIN, true, 0.0, true, 1.0 );
-    g_hCvarAllowSniper = CreateConVar(      "sm_skill_skeet_allowsniper",   "1", "Whether to count/forward sniper/magnum headshots as skeets.", FCVAR_PLUGIN, true, 0.0, true, 1.0 );
-    g_hCvarAllowGLSkeet = CreateConVar(     "sm_skill_skeet_allowgl",       "1", "Whether to count/forward direct GL hits as skeets.", FCVAR_PLUGIN, true, 0.0, true, 1.0 );
-    g_hCvarDrawCrownThresh = CreateConVar(  "sm_skill_drawcrown_damage",  "500", "How much damage a survivor must at least do in the final shot for it to count as a drawcrown.", FCVAR_PLUGIN, true, 0.0, false );
-    g_hCvarSelfClearThresh = CreateConVar(  "sm_skill_selfclear_damage",  "200", "How much damage a survivor must at least do to a smoker for him to count as self-clearing.", FCVAR_PLUGIN, true, 0.0, false );
-    g_hCvarHunterDPThresh = CreateConVar(   "sm_skill_hunterdp_height",   "400", "Minimum height of hunter pounce for it to count as a DP.", FCVAR_PLUGIN, true, 0.0, false );
-    g_hCvarJockeyDPThresh = CreateConVar(   "sm_skill_jockeydp_height",   "300", "How much height distance a jockey must make for his 'DP' to count as a reportable highpounce.", FCVAR_PLUGIN, true, 0.0, false );
-    g_hCvarHideFakeDamage = CreateConVar(   "sm_skill_hidefakedamage",      "0", "If set, any damage done that exceeds the health of a victim is hidden in reports.", FCVAR_PLUGIN, true, 0.0, true, 1.0 );
-    g_hCvarDeathChargeHeight = CreateConVar("sm_skill_deathcharge_height","400", "How much height distance a charger must take its victim for a deathcharge to be reported.", FCVAR_PLUGIN, true, 0.0, false );
-    g_hCvarInstaTime = CreateConVar(        "sm_skill_instaclear_time",     "0.75", "A clear within this time (in seconds) counts as an insta-clear.", FCVAR_PLUGIN, true, 0.0, false );
-    g_hCvarBHopMinStreak = CreateConVar(    "sm_skill_bhopstreak",          "3", "The lowest bunnyhop streak that will be reported.", FCVAR_PLUGIN, true, 0.0, false );
-    g_hCvarBHopMinInitSpeed = CreateConVar( "sm_skill_bhopinitspeed",     "150", "The minimal speed of the first jump of a bunnyhopstreak (0 to allow 'hops' from standstill).", FCVAR_PLUGIN, true, 0.0, false );
-    g_hCvarBHopContSpeed = CreateConVar(    "sm_skill_bhopkeepspeed",     "300", "The minimal speed at which hops are considered succesful even if not speed increase is made.", FCVAR_PLUGIN, true, 0.0, false );
+    g_hCvarAllowMelee = CreateConVar(       "sm_skill_skeet_allowmelee",    "1", "Whether to count/forward melee skeets.", FCVAR_NONE, true, 0.0, true, 1.0 );
+    g_hCvarAllowSniper = CreateConVar(      "sm_skill_skeet_allowsniper",   "1", "Whether to count/forward sniper/magnum headshots as skeets.", FCVAR_NONE, true, 0.0, true, 1.0 );
+    g_hCvarAllowGLSkeet = CreateConVar(     "sm_skill_skeet_allowgl",       "1", "Whether to count/forward direct GL hits as skeets.", FCVAR_NONE, true, 0.0, true, 1.0 );
+    g_hCvarDrawCrownThresh = CreateConVar(  "sm_skill_drawcrown_damage",  "500", "How much damage a survivor must at least do in the final shot for it to count as a drawcrown.", FCVAR_NONE, true, 0.0, false );
+    g_hCvarSelfClearThresh = CreateConVar(  "sm_skill_selfclear_damage",  "200", "How much damage a survivor must at least do to a smoker for him to count as self-clearing.", FCVAR_NONE, true, 0.0, false );
+    g_hCvarHunterDPThresh = CreateConVar(   "sm_skill_hunterdp_height",   "400", "Minimum height of hunter pounce for it to count as a DP.", FCVAR_NONE, true, 0.0, false );
+    g_hCvarJockeyDPThresh = CreateConVar(   "sm_skill_jockeydp_height",   "300", "How much height distance a jockey must make for his 'DP' to count as a reportable highpounce.", FCVAR_NONE, true, 0.0, false );
+    g_hCvarHideFakeDamage = CreateConVar(   "sm_skill_hidefakedamage",      "0", "If set, any damage done that exceeds the health of a victim is hidden in reports.", FCVAR_NONE, true, 0.0, true, 1.0 );
+    g_hCvarDeathChargeHeight = CreateConVar("sm_skill_deathcharge_height","400", "How much height distance a charger must take its victim for a deathcharge to be reported.", FCVAR_NONE, true, 0.0, false );
+    g_hCvarInstaTime = CreateConVar(        "sm_skill_instaclear_time",     "0.75", "A clear within this time (in seconds) counts as an insta-clear.", FCVAR_NONE, true, 0.0, false );
+    g_hCvarBHopMinStreak = CreateConVar(    "sm_skill_bhopstreak",          "3", "The lowest bunnyhop streak that will be reported.", FCVAR_NONE, true, 0.0, false );
+    g_hCvarBHopMinInitSpeed = CreateConVar( "sm_skill_bhopinitspeed",     "150", "The minimal speed of the first jump of a bunnyhopstreak (0 to allow 'hops' from standstill).", FCVAR_NONE, true, 0.0, false );
+    g_hCvarBHopContSpeed = CreateConVar(    "sm_skill_bhopkeepspeed",     "300", "The minimal speed at which hops are considered succesful even if not speed increase is made.", FCVAR_NONE, true, 0.0, false );
     
     // cvars: built in
     g_hCvarPounceInterrupt = FindConVar("z_pounce_damage_interrupt");
@@ -538,9 +538,9 @@ public OnPluginStart()
     g_hCvarMaxPounceDistance = FindConVar("z_pounce_damage_range_max");
     g_hCvarMinPounceDistance = FindConVar("z_pounce_damage_range_min");
     g_hCvarMaxPounceDamage = FindConVar("z_hunter_max_pounce_bonus_damage");
-    if ( g_hCvarMaxPounceDistance == INVALID_HANDLE ) { g_hCvarMaxPounceDistance = CreateConVar( "z_pounce_damage_range_max",  "1000.0", "Not available on this server, added by l4d2_skill_detect.", FCVAR_PLUGIN, true, 0.0, false ); }
-    if ( g_hCvarMinPounceDistance == INVALID_HANDLE ) { g_hCvarMinPounceDistance = CreateConVar( "z_pounce_damage_range_min",  "300.0", "Not available on this server, added by l4d2_skill_detect.", FCVAR_PLUGIN, true, 0.0, false ); }
-    if ( g_hCvarMaxPounceDamage == INVALID_HANDLE ) { g_hCvarMaxPounceDamage = CreateConVar( "z_hunter_max_pounce_bonus_damage",  "49", "Not available on this server, added by l4d2_skill_detect.", FCVAR_PLUGIN, true, 0.0, false ); }
+    if ( g_hCvarMaxPounceDistance == INVALID_HANDLE ) { g_hCvarMaxPounceDistance = CreateConVar( "z_pounce_damage_range_max",  "1000.0", "Not available on this server, added by l4d2_skill_detect.", FCVAR_NONE, true, 0.0, false ); }
+    if ( g_hCvarMinPounceDistance == INVALID_HANDLE ) { g_hCvarMinPounceDistance = CreateConVar( "z_pounce_damage_range_min",  "300.0", "Not available on this server, added by l4d2_skill_detect.", FCVAR_NONE, true, 0.0, false ); }
+    if ( g_hCvarMaxPounceDamage == INVALID_HANDLE ) { g_hCvarMaxPounceDamage = CreateConVar( "z_hunter_max_pounce_bonus_damage",  "49", "Not available on this server, added by l4d2_skill_detect.", FCVAR_NONE, true, 0.0, false ); }
     
     
     // tries
@@ -2548,12 +2548,21 @@ stock HandleShove( attacker, victim, zombieClass )
 // real skeet
 stock HandleSkeet( attacker, victim, bool:bMelee = false, bool:bSniper = false, bool:bGL = false )
 {
-    // report?
-    if ( GetConVarBool(g_hCvarReport) && REP_SKEET )
+    /* report?
+    if ( GetConVarBool(g_hCvarReport) && GetConVarInt(g_hCvarReportFlags) & REP_SKEET )
     {
-        if ( IS_VALID_INGAME(attacker) && IS_VALID_INGAME(victim) && !IsFakeClient(victim) )
+        if ( attacker == -2 )
         {
-            CPrintToChatAll( "{green}★★ {olive}%N {blue}%sskeeted {olive}%N",
+            // team skeet sets to -2
+            if ( IS_VALID_INGAME(victim) && !IsFakeClient(victim) ) {
+                PrintToChatAll( "\x05%N\x01 was team-skeeted.", victim );
+            } else {
+                PrintToChatAll( "\x01A hunter was team-skeeted." );
+            }
+        }
+        else if ( IS_VALID_INGAME(attacker) && IS_VALID_INGAME(victim) && !IsFakeClient(victim) )
+        {
+            PrintToChatAll( "\x04%N\x01 %sskeeted \x05%N\x01.",
                     attacker,
                     (bMelee) ? "melee-": ((bSniper) ? "headshot-" : ((bGL) ? "grenade-" : "") ),
                     victim 
@@ -2561,12 +2570,12 @@ stock HandleSkeet( attacker, victim, bool:bMelee = false, bool:bSniper = false, 
         }
         else if ( IS_VALID_INGAME(attacker) )
         {
-            CPrintToChatAll( "{green}★★ {olive}%N {blue}%sskeeted {default}a hunter.",
+            PrintToChatAll( "\x04%N\x01 %sskeeted a hunter.",
                     attacker,
                     (bMelee) ? "melee-": ((bSniper) ? "headshot-" : ((bGL) ? "grenade-" : "") )
                 );
         }
-    }
+    }*/
     
     // call forward
     if ( bSniper )
@@ -2860,10 +2869,11 @@ stock HandleDeathCharge( attacker, victim, Float:height, Float:distance, bool:bC
 // SI clears    (cleartimeA = pummel/pounce/ride/choke, cleartimeB = tongue drag, charger carry)
 stock HandleClear( attacker, victim, pinVictim, zombieClass, Float:clearTimeA, Float:clearTimeB, bool:bWithShove = false )
 {
-    /* sanity check:
+    
+    // sanity check:
     if ( clearTimeA < 0 && clearTimeA != -1.0 ) { clearTimeA = 0.0; }
     if ( clearTimeB < 0 && clearTimeB != -1.0 ) { clearTimeB = 0.0; }
-    
+    /*
     PrintDebug(0, "Clear: %i freed %i from %i: time: %.2f / %.2f -- class: %s (with shove? %i)", attacker, pinVictim, victim, clearTimeA, clearTimeB, g_csSIClassName[zombieClass], bWithShove );
     
     if ( attacker != pinVictim && GetConVarBool(g_hCvarReport))
@@ -2910,7 +2920,8 @@ stock HandleClear( attacker, victim, pinVictim, zombieClass, Float:clearTimeA, F
                 }
             }
         }
-    }*/
+    }
+    */
     
     Call_StartForward(g_hForwardClear);
     Call_PushCell(attacker);
@@ -2921,6 +2932,7 @@ stock HandleClear( attacker, victim, pinVictim, zombieClass, Float:clearTimeA, F
     Call_PushFloat(clearTimeB);
     Call_PushCell( (bWithShove) ? 1 : 0 );
     Call_Finish();
+    
 }
 
 // booms

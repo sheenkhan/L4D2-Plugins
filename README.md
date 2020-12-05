@@ -88,7 +88,7 @@ chmod +x ~/game/l4d2/start.sh
 - **l4d2_drop** 丢弃物品插件，命令`!drop`、`!g`，来源：[点击](https://forums.alliedmods.net/showthread.php?t=123098&page=9)
 - **l4d2_kill_mvp** 击杀排名插件，命令`!mvp`，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2666056&postcount=9)
 - **l4d2_melee_in_the_saferoom** 安全屋刷近战，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2719475&postcount=500)
-- **l4d2_skill_detect** smoker tongue cut、skeet hunter 等骚操作提示，来源：[点击](https://github.com/SirPlease/L4D2-Competitive-Rework/blob/master/addons/sourcemod/scripting/l4d2_skill_detect.sp)
+- **l4d2_skill_detect**、**l4d2_stats** smoker tongue cut、skeet hunter 等骚操作提示，来源：[点击](https://github.com/SirPlease/L4D2-Competitive-Rework/blob/master/addons/sourcemod/scripting/l4d2_skill_detect.sp)、[点击](https://github.com/TGMaster/Sourcepawn/blob/master/l4d2_stats.sp)
 - **l4dinfectedbots** 多特插件，来源：[点击](https://github.com/fbef0102/L4D1_2-Plugins/tree/master/l4dinfectedbots)
 - **sm_RestartEmpty** 空服后重启服务器，来源：[点击](https://forums.alliedmods.net/showthread.php?t=315367)
 - **logcommands** 客户端聊天、命令记录，来源：[点击](https://github.com/Franc1sco/Commands-Logger)
