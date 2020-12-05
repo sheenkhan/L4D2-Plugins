@@ -95,7 +95,6 @@ chmod +x ~/game/l4d2/start.sh
 - **rygive** 另一个管理员刷物品、特感插件，命令`!rygive`，来源QQ群
 - **SaferoomHPRestore** 开局回血，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2647749&postcount=8)
 - **sm_l4d_mapchanger** 过关自动换图，来源：[点击](https://github.com/Raysamatoken/L4D2-Server-plugins/blob/master/left4dead2/addons/sourcemod/scripting/sm_l4d2_mapchanger.sp)
-- **survivor_afk_fix** AFK命令修复，来源：[点击](https://forums.alliedmods.net/showthread.php?p=2714236)
 - **TickrateFixes** 高Tickrate修复，来源：[点击](https://github.com/SirPlease/L4D2-Competitive-Rework)
 - **votes** 投票回血、踢人、换图插件，命令`!v`，来源：[点击](https://bbs.3dmgame.com/thread-2094823-1-1.html)
 - **stripper** 在地图上添加或删除物品，用于在c1m1开局添加枪械，来源：[点击](https://forums.alliedmods.net/showpost.php?p=2720408&postcount=1735)
