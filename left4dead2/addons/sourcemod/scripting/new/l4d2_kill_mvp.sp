@@ -164,7 +164,7 @@ displaykillinfected()
 		killss = killif[client];
 		killsss = killifs[client];
 		damageffss = damageff[client];
-		PrintToChatAll("\x03特感\x04%2d \x03丧尸\x04%3i \x03友伤\x04%4d \x03玩家\x04%N", killss, killsss, damageffss, client);
+		PrintToChatAll("\x03特感:\x04%3i \x03丧尸:\x04%4i \x03友伤:\x04%5i \x03玩家: \x04%N", killss, killsss, damageffss, client);
 		i++;
 	}
 	

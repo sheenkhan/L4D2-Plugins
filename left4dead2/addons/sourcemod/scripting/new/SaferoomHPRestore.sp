@@ -43,7 +43,7 @@ public Action: Event_MapTransition(Handle:event, const String:name[], bool:dontB
 	}
 	for (new i = 1; i <= MaxClients; i++)
 	{
-		if (IsClientConnected(i) && GetClientTeam(i) == 2)
+		if (IsClientInGame(i) && IsClientConnected(i) && GetClientTeam(i) == 2)
 		{
 			if (GetClientHealth(i) < iHealthToSet)
 			{

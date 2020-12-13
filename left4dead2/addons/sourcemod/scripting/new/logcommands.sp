@@ -44,7 +44,7 @@ char ignoredCommands[][] =
 	"vocalize SmartLook",
 	"spec_mode",
 	"setupslot",
-	
+	"nb_assault",
 };
 
 char g_sCmdLogPath[256];

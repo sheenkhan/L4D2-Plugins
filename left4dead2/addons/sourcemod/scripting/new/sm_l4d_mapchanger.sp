@@ -377,7 +377,8 @@ l4d_gamemode()
 			|| (strcmp(gmode, "mutation14",false) == 0)
 			|| (strcmp(gmode, "mutation16",false) == 0)
 			|| (strcmp(gmode, "mutation17",false) == 0)
-			|| (strcmp(gmode, "mutation20",false) == 0))
+			|| (strcmp(gmode, "mutation20",false) == 0)
+			|| (strcmp(gmode, "community5",false) == 0))
 	{
 		return 1;
 	}
